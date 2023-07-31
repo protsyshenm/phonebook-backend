@@ -4,12 +4,18 @@ const cors = require('cors')
 const app = express()
 
 app.use(express.json())
+app.use(express.static('build'))
 app.use(cors())
 
 morgan.token('body', (request, response) => {
   return JSON.stringify(request.body)
 })
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+
+morgan.token('ip', (request, response) => {
+  return request.socket.remoteAddress
+})
+
+app.use(morgan(':method :url :status :res[content-length] - :ip - :response-time ms :body'))
 
 let persons = [
   {
