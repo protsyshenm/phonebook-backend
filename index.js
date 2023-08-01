@@ -33,12 +33,16 @@ const errorHandler = (error, request, response, next) => {
 
 app.use(errorHandler)
 
-// app.get('/info', (request, response) => {
-//   const peopleLength = people.length
-//   const dateNow = new Date().toString()
-//   response.send(`<p>Phonebook has info for ${peopleLength} people</p>
-//                  <p>${dateNow}</p>`)
-// })
+app.get('/info', (request, response, next) => {
+  Person.find()
+    .then(foundPeople => {
+      const peopleLength = foundPeople.length
+      const dateNow = new Date().toString()
+      response.send(`<p>Phonebook has info for ${peopleLength} people</p>
+                     <p>${dateNow}</p>`)
+    })
+    .catch(error => next(error))  
+})
 
 app.get('/api/people', (request, response, next) => {
   Person.find()
@@ -68,15 +72,16 @@ app.post('/api/people', (request, response, next) => {
     .catch(error => next(error))
 })
 
-app.get('/api/people/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const person = people.find(person => person.id === id)
-  
-  if (person) {
-    response.json(person)
-  } else {
-    response.status(404).end()
-  }
+app.get('/api/people/:id', (request, response, next) => {
+  Person.findById(request.params.id)
+    .then(foundPerson => {
+      if(foundPerson) {
+        response.json(foundPerson)
+      } else {
+        response.status(404).end()
+      }
+    })
+    .catch(error => next(error))
 })
 
 app.delete('/api/people/:id', (request, response, next) => {
