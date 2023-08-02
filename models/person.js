@@ -13,10 +13,10 @@ const personSchema = new mongoose.Schema({
   number: {
     type: String,
     required: true,
-    minLength: 11,
+    minLength: 8,
     validate: {
       validator: v => {
-        return /^\d{2,3}-\d{7,10}$/.test(v)
+        return /^\d{2,3}-\d{5,10}$/.test(v)
       }
     }
   }
