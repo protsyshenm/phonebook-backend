@@ -28,7 +28,7 @@ app.get('/info', (request, response, next) => {
       response.send(`<p>Phonebook has info for ${peopleLength} people</p>
                      <p>${dateNow}</p>`)
     })
-    .catch(error => next(error))  
+    .catch(error => next(error))
 })
 
 app.get('/api/people', (request, response, next) => {
